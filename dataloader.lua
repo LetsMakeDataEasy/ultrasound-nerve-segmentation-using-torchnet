@@ -9,9 +9,9 @@ Data Loader used to load nerve segmentation data
 
 
 require 'hdf5'
-dofile ('constants.lua')
+dofile ('constants')
 local tnt = require 'torchnet'
-local t = dofile ('utils/transforms.lua')
+local t = dofile ('utils/transforms')
 
 local DataLoader = torch.class 'DataLoader'
 torch.setnumthreads(1)

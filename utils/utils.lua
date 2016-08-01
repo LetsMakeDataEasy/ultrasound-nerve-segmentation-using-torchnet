@@ -1,6 +1,6 @@
 require 'image'
 require 'nn'
-require 'constants.lua'
+require 'constants'
 Map = require 'pl.Map'
 
 --- Returns rle of a vector as a string
