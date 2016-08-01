@@ -11,8 +11,6 @@ require 'torch'
 require 'paths'
 require 'optim'
 require 'nn'
-require 'cunn'
-require 'cudnn'
 tnt = require 'torchnet'
 
 torch.setnumthreads(1) -- speed up

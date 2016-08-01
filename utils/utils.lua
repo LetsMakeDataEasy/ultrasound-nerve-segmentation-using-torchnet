@@ -1,7 +1,5 @@
 require 'image'
 require 'nn'
-require 'cudnn'
-require 'cunn'
 require 'constants.lua'
 Map = require 'pl.Map'
 
@@ -54,15 +52,13 @@ end
 
 --- For upscaling 112*144 image to 420*580 image using spatial nearest up sampling
 function GetScaledUpImage(img)
-	local scaleUpNN = nn.Sequential():add(nn.SpatialUpSamplingNearest(4)):add(nn.SpatialZeroPadding(2,2,-14,-14)):cuda()
-	img = img:cuda()
+	local scaleUpNN = nn.Sequential():add(nn.SpatialUpSamplingNearest(4)):add(nn.SpatialZeroPadding(2,2,-14,-14))
 	return scaleUpNN:forward(img)
 end
 
 --- Returns masks with pixel-wise probabilities
 function GetMaskProbabilities(vec)
-	local spatialSoftMax = nn.Sequential():add(nn.SpatialSoftMax()):cuda()
-	vec = vec:cuda()
+	local spatialSoftMax = nn.Sequential():add(nn.SpatialSoftMax())
 	return spatialSoftMax:forward(vec)
 end
 

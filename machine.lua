@@ -11,8 +11,6 @@ require 'torch'
 require 'paths'
 require 'optim'
 require 'nn'
-require 'cunn'
-require 'cudnn'
 require 'utils/utils.lua'
 tnt = require 'torchnet'
 
@@ -46,25 +44,22 @@ function Machine:__init(opt)
 end
 
 --- Loads the model
--- @return Model loaded in CUDA,Name of the model
+-- @return Model,Name of the model
 function Machine:LoadModel(opt)
    local model = opt.model
    require(model)
    local net,name = createModel(opt)
-   net = net:cuda()
-   cudnn.convert(net, cudnn)
    return net,name
 end
 
 --- Loads the criterion
--- @return Criterion loaded in CUDA
+-- @return Criterion
 function Machine:LoadCriterion(opt)
    local weights = torch.Tensor(2)
    -- based on the ratio of distribution of masks pixels w.r.t no mask pixels
    weights[1] = 1/0.985
    weights[2] = 1/0.015
-   local criterion = cudnn.SpatialCrossEntropyCriterion(weights)
-   criterion = criterion:cuda()
+   local criterion = nn.CrossEntropyCriterion(weights)
    return criterion
 end
 
@@ -150,15 +145,6 @@ function Machine:attachHooks(opt)
       end
       print(("Epoch : %d, Learning Rate : %.5f "):format(state.epoch+1,state.optim.learningRate or state.config.learningRate))
       self:ResetMeters()
-   end
-
-   --- Transfers input and target to cuda
-   local igpu, tgpu = torch.CudaTensor(), torch.CudaTensor()
-   local onSampleHook = function(state)
-      igpu:resize(state.sample.input:size()):copy(state.sample.input)
-      tgpu:resize(state.sample.target:size()):copy(state.sample.target)
-      state.sample.input  = igpu
-      state.sample.target = tgpu
    end
 
    local onForwardHook = function(state)

@@ -8,7 +8,6 @@ Initialization for the U-Net model
 --]]
 
 require 'nn'
-require 'cudnn'
 local nninit = require 'nninit'
 
 local getBias = function(module)

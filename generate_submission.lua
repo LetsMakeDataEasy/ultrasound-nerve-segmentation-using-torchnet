@@ -9,8 +9,6 @@ Generates submission file
 
 require 'torch'
 require 'nn'
-require 'cunn'
-require 'cudnn'
 require 'paths'
 require 'image'
 require 'hdf5'
@@ -53,7 +51,6 @@ end
 function GenerateMasks(opt)
 	print("Loading model and dataset")
 	local model = torch.load(opt.model)
-	model = model:cuda()
 	model:evaluate()
 	local xf = hdf5.open(opt.dataset)
 	local testImages = xf:read('/images'):all()
@@ -76,14 +73,14 @@ function GenerateMasks(opt)
 end
 
 --- Returns the mask after taking average over augmentation of images
--- @param model Model to be used, loaded in CUDA
+-- @param model Model to be used
 -- @param img Image to be used
 function GetSegmentationModelOutputs(model,img)
 	local transformations = GetTransformations()
 	local modelOutputs = torch.Tensor(#transformations+1,trueHeight,trueWidth)
-	modelOutputs[1] = GetMaskFromOutput(model:forward(img:reshape(1,1,imgHeight,imgWidth):cuda())[1],true)
+	modelOutputs[1] = GetMaskFromOutput(model:forward(img:reshape(1,1,imgHeight,imgWidth))[1],true)
 	for i=1,#transformations do
-		modelOutputs[i+1] = GetMaskFromOutput(model:forward(transformations[i]['do'](img):reshape(1,1,imgHeight,imgWidth):cuda())[1],true,transformations[i]['undo'])
+		modelOutputs[i+1] = GetMaskFromOutput(model:forward(transformations[i]['do'](img):reshape(1,1,imgHeight,imgWidth))[1],true,transformations[i]['undo'])
 	end
 	return GetTunedResult(torch.mean(modelOutputs,1)[1],0.5)
 end
