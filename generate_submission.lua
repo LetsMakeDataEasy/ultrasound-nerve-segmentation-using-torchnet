@@ -15,8 +15,8 @@ require 'hdf5'
 require 'xlua'
 require 'nngraph'
 require 'csvigo'
-require 'utils/utils'
-require 'constants'
+require 'utils/utils.lua'
+require 'constants.lua'
 
 torch.setnumthreads(1) -- Increase speed
 torch.setdefaulttensortype('torch.FloatTensor')

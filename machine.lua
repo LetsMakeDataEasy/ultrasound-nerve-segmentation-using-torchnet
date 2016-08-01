@@ -11,7 +11,7 @@ require 'torch'
 require 'paths'
 require 'optim'
 require 'nn'
-require 'utils/utils'
+require 'utils/utils.lua'
 tnt = require 'torchnet'
 
 local Machine = torch.class 'Machine'
