@@ -189,7 +189,6 @@ function Machine:attachHooks(opt)
    --- Attaching all the hooks
    self.engine.hooks.onStart = onStartHook
    self.engine.hooks.onStartEpoch = onStartEpochHook
-   self.engine.hooks.onSample = onSampleHook
    self.engine.hooks.onForward = onForwardHook
    self.engine.hooks.onForwardCriterion = onForwardCriterionHook
    self.engine.hooks.onBackwardCriterion = onBackwardCriterionHook
