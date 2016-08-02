@@ -39,7 +39,7 @@ function main(opt)
    opt.valSize = opt.valSize==-1 and nil or opt.valSize
 
    -- loads the data loader
-   require 'dataloader.lua'
+   require 'dataloader'
    local dl = DataLoader(opt)
    local trainDataset = dl:GetData('train',opt.trainSize)
    local valDataset = dl:GetData('val',opt.valSize)
@@ -48,7 +48,7 @@ function main(opt)
    opt.dataset = paths.basename(opt.dataset,'.h5')
    print(opt)
 
-   require 'machine.lua'
+   require 'machine'
    local m = Machine(opt)
    m:train()
 end

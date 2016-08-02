@@ -10,7 +10,7 @@ Loading U-Net model
 require 'nn'
 require 'nngraph'
 
-local MSRInit = require 'models/initialization.lua'
+local MSRInit = require 'models/initialization'
 
 local MaxPooling = nn.SpatialMaxPooling
 local Convolution = nn.SpatialConvolution
